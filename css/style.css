@@ -9414,6 +9414,20 @@ ul.style-default li:last-child, ol.style-default li:last-child {
   .about-img {
       margin-left: -55px;
   }
+
+  @media (min-width: 300px) { /* Adjust width for your needs */
+    #canvas2 { /* Add a class to your 3D container */
+      
+        width: 200px;
+        height: 700px;
+
+
+
+    }
+  }
+
+
+
   .about-detail {
       margin-left: 70px;
   }
