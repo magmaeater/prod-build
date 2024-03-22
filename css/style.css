@@ -49,12 +49,26 @@ Tags: one-column, two-columns, left-sidebar, right-sidebar, full-width-template,
 @import url('https://fonts.googleapis.com/css?family=Titillium Web:200,300,300i,400,400i,600,600i,700,700i,900');
 @import url('https://fonts.googleapis.com/css?family=Josefin Sans:300,300i,400,400i,500,500i,600,600i,700,700i');
 
+
+
+
+
 html {
   overflow-x: hidden;
   line-height: 1.15;
   /* 1 */
   -webkit-text-size-adjust: 100%;
   /* 2 */
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+
+
 }
 
 /* Sections
@@ -4764,11 +4778,12 @@ object {
 .ot-process .process_nav {
   margin: 0;
   text-align: center;
-  display: flex;
+  display: none;
   display: -ms-flexbox;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   border-bottom: 3px solid #000;
+  
 }
 .ot-process .process_nav li {
   position: relative;
@@ -7084,6 +7099,7 @@ div.elementor-widget-heading .elementor-heading-title {
 .main-navigation ul.mega-sub-menu li.row {
   display: flex;
   max-width: 1200px;
+  
   margin: 0 auto;
   padding: 0;
 }
@@ -9413,18 +9429,11 @@ ul.style-default li:last-child, ol.style-default li:last-child {
   }
   .about-img {
       margin-left: -55px;
+      width: 600px;
+      height: 400px
   }
 
-  @media (min-width: 300px) { /* Adjust width for your needs */
-    #canvas2 { /* Add a class to your 3D container */
-      
-        width: 200px;
-        height: 700px;
-
-
-
-    }
-  }
+ 
 
 
 
@@ -10393,3 +10402,4 @@ ul.style-default li:last-child, ol.style-default li:last-child {
   right: 1px;
   bottom: 1px;
 }
+

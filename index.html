@@ -205,7 +205,7 @@
             <script type="module">
                 import * as THREE from "three";
                 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader.js";
-                
+                //import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
                 
                 
 
@@ -224,11 +224,15 @@
                     model.scale.set(0.1, 0.1, 0.1);
                     scene.add(model); // Add the loaded model to the scene
                     
+                    let isMouseDown = false;
+                    let initialMouseX = 0;
+                    let initialMouseY = 0;
+                    let previousMouseX = 0;
+                    let previousMouseY = 0;
+                    let accumulatedDeltaX = 0; // Accumulated horizontal delta for rotation
+                    let accumulatedDeltaY = 0; // Accumulated vertical delta for rotation
                     
-
-                    let mouseX = 0;
-                    let mouseY = 0;
-
+                    /*
                     window.addEventListener('mousemove', (event) => {
                     // Normalize mouse position to range of -0.5 to 0.5
                     mouseX = event.clientX / window.innerWidth - 0.5;
@@ -246,12 +250,47 @@
                     
 
                     });
+                    */
+
+                    window.addEventListener('mousedown', (event) => {
+                        isMouseDown = true;
+                        initialMouseX = event.clientX;
+                        initialMouseY = event.clientY;
+                        previousMouseX = event.clientX;
+                        previousMouseY = event.clientY;
+                    });
+
+                    window.addEventListener('mouseup', () => {
+                        isMouseDown = false;
+                    });
+
+                    window.addEventListener('mousemove', (event) => {
+                        if (isMouseDown) {
+                            const deltaX = event.clientX - previousMouseX;
+                            const deltaY = event.clientY - previousMouseY;
+
+                            accumulatedDeltaX += deltaX;
+                            accumulatedDeltaY += deltaY;
+
+                            model.rotation.y += deltaX * 0.01; // Adjust sensitivity as needed
+                            model.rotation.x += deltaY * 0.01; // Adjust sensitivity as needed
+
+                            previousMouseX = event.clientX;
+                            previousMouseY = event.clientY;
+                        }
+                    });
+
                     
 
                     function animate() {
                     requestAnimationFrame(animate);
-                    renderer.clear();
 
+                    
+                    
+
+                    renderer.clear();
+                    
+                    
                     
 
                     renderer.render(scene, camera);
@@ -289,23 +328,7 @@
                 window.addEventListener('resize', onResize);
 
                 
-
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    renderer.clear(); // Clear the canvas before rendering the scene
-
-                    //cube.rotation.x += 0.01;
-                    //cube.rotation.y += 0.02;
-
-                    // Update model rotation based on mouse movement
-                    
-
-
-                    renderer.render(scene, camera);
-                }
-
-                animate();
+                
 
 
 
@@ -342,28 +365,33 @@
 
                 const scene2 = new THREE.Scene();
                 const camera2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                camera2.position.z = 0.3; // Increased z-position to move camera further back
-                camera2.position.y = 0.15;
+                camera2.position.z = 1.2; // Increased z-position to move camera further back
+                camera2.position.y = 0.8;
+
+                let can = document.createElement("canvas");
+                can.style.width = "100%";
+                can.style.height = "100%";
                 
 
-                const renderer2 = new THREE.WebGLRenderer({ antialias: true });
-                
-                renderer2.setSize(625, 579.5);
+                const renderer2 = new THREE.WebGLRenderer({canvas:can, antialias:true});
+
+                //let w = window.innerWidth * 0.3; // Adjust percentage as needed (e.g., 0.5 for 50%)
+                //let h = window.innerHeight * 0.6; // Adjust percentage for height if needed
+                    
+                    
+                //renderer2.setSize(w, h);
+
+
 
                 renderer2.domElement.setAttribute('id', 'canvas2'); // Set a data attribute
-
-                
-
-
-
-                
+                renderer2.setPixelRatio( window.devicePixelRatio );
 
 
                 const loader2 = new GLTFLoader();
                 loader2.load('3d-models/sofa_couch.glb', // Replace with your model filename and path
                 (gltf) => {
                     const model2 = gltf.scene;
-                    model2.scale.set(0.1, 0.1, 0.1);
+                    model2.scale.set(0.5, 0.5, 0.5);
                     scene2.add(model2); // Add the loaded model to the scene
 
                     let rotationSpeed = 0.009; // Adjust rotation speed as needed
@@ -373,8 +401,8 @@
                     renderer2.clear();
 
                     
+                
 
-                    
 
                     // Update model rotation automatically
                     model2.rotation.y += rotationSpeed;
@@ -410,7 +438,7 @@
 
                 
 
-                const light2 = new THREE.AmbientLight(0xffffff, 10.5);
+                const light2 = new THREE.AmbientLight(0xffffff, 5);
                 scene2.add(light2);
 
                 
@@ -486,7 +514,7 @@
                                     </li>
                                 </ul>
                                 <div class="process-des">
-                                    <div class="process-des-item">Original design project of high quality raises profit – this is proved in practice by many of our customers. A professional approach will avoid of many common mistakes, minimize the cost of decoration materials and choose the best way to implement your ideas or direct your</div>
+                                    <div class="process-des-item"></div>
                                     <div class="process-des-item">Original design project of high quality raises profit – this is proved in practice by many of our customers. A professional approach will avoid of many common mistakes, minimize the cost of decoration materials and choose the best way to implement your ideas or direct your</div>
                                     <div class="process-des-item">Original design project of high quality raises profit – this is proved in practice by many of our customers. A professional approach will avoid of many common mistakes, minimize the cost of decoration materials and choose the best way to implement your ideas or direct your</div>
                                     <div class="process-des-item">Original design project of high quality raises profit – this is proved in practice by many of our customers. A professional approach will avoid of many common mistakes, minimize the cost of decoration materials and choose the best way to implement your ideas or direct your</div>
@@ -525,6 +553,7 @@
                 const model3 = gltf.scene;
                 model3.scale.set(0.1, 0.1, 0.1);
                 model3.rotation.y = 179.6; 
+                
                 scene3.add(model3); // Add the loaded model to the scene
 
                 camera3.lookAt(model3.position)
@@ -546,6 +575,46 @@
                 }
 
                 let rotationSpeed = 0.009; // Adjust rotation speed as needed
+
+
+                let isMouseDown2 = false;
+                let initialMouseX2 = 0;
+                let initialMouseY2 = 0;
+                let previousMouseX2 = 0;
+                let previousMouseY2 = 0;
+                let accumulatedDeltaX2 = 0; // Accumulated horizontal delta for rotation
+                let accumulatedDeltaY2 = 0; // Accumulated vertical delta for rotation
+
+                window.addEventListener('mousedown', (event) => {
+                    isMouseDown2 = true;
+                    initialMouseX2 = event.clientX;
+                    initialMouseY2 = event.clientY;
+                    previousMouseX2 = event.clientX;
+                    previousMouseY2 = event.clientY;
+                });
+
+                window.addEventListener('mouseup', () => {
+                    isMouseDown2 = false;
+                });
+
+                window.addEventListener('mousemove', (event) => {
+                    if (isMouseDown2) {
+                        const deltaX2 = event.clientX - previousMouseX2;
+                        const deltaY2 = event.clientY - previousMouseY2;
+
+                        accumulatedDeltaX2 += deltaX2;
+                        accumulatedDeltaY2 += deltaY2;
+
+                        model3.rotation.y += deltaX2 * 0.01; // Adjust sensitivity as needed
+                        model3.rotation.x += deltaY2 * 0.01; // Adjust sensitivity as needed
+
+                        previousMouseX2 = event.clientX;
+                        previousMouseY2 = event.clientY;
+                    }
+                });
+
+
+
 
                 function animate3() {
                 requestAnimationFrame(animate3);
@@ -609,7 +678,7 @@
                         <div class="col-md-12 text-center theratio-align-center">
                             <div class="ot-heading is-dots">
                                 <span>[ OUR SERVICES ]</span>
-                                <h2 class="main-heading">What Can We Offer</h2>
+                                <h2 class="main-heading"></h2>
                             </div>
                             <div class="space-50"></div>
                         </div>
